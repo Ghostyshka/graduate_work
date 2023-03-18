@@ -1,12 +1,10 @@
 ﻿using MailApp.Core.Interfaces;
-using MailApp.Core.Models;
-using MailApp.Core.ViewModels;
 using MailKit;
 using MailKit.Net.Imap;
 using MailKit.Search;
 using MimeKit;
 using System;
-using System.Collections.ObjectModel;
+using System.Collections.Generic;
 using System.Linq;
 using System.Net;
 using System.Threading.Tasks;
@@ -15,30 +13,19 @@ namespace MailApp.Core.Services
 {
     public class EmailService : IEmailService
     {
-        private readonly MainPageViewModel _mainPageViewModel;
-        public EmailService(MainPageViewModel mainPageViewModel)
+        public EmailService()
         {
-            _mainPageViewModel = mainPageViewModel;
+
         }
 
-        public async Task LoadEmails()
+        public async Task<IEnumerable<MimeMessage>> LoadEmails(DateTime from, DateTime to)
         {
-            _mainPageViewModel.IsLoading = true;
             using var client = await GetImapClient();
             await client.Inbox.OpenAsync(FolderAccess.ReadOnly);
-            var emailsIds = await client.Inbox.SearchAsync(SearchQuery.DeliveredAfter(_mainPageViewModel.From.Date).And(SearchQuery.DeliveredBefore(_mainPageViewModel.To.Date)));
-            var emails = emailsIds.Select(x => client.Inbox.GetMessage(x));
-
-            _mainPageViewModel.MimeMessages = new ObservableCollection<MimeMessage>(emails);
-
-            _mainPageViewModel.EmailDatas = new ObservableCollection<EmailData>(_mainPageViewModel.MimeMessages.Select(x => new EmailData()
-            {
-                Subject = x.Subject
-            }));
-            _mainPageViewModel.IsLoading = false;
-
+            var emailsIds = await client.Inbox.SearchAsync(SearchQuery.DeliveredAfter(from).And(SearchQuery.DeliveredBefore(to)));
+            var emails = emailsIds.Select(x => client.Inbox.GetMessage(x)).ToList();
+            return emails;
         }
-
 
         private async Task<ImapClient> GetImapClient()
         {

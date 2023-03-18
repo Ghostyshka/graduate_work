@@ -1,9 +1,12 @@
-﻿using System.Threading.Tasks;
+﻿using MimeKit;
+using System.Collections.Generic;
+using System;
+using System.Threading.Tasks;
 
 namespace MailApp.Core.Interfaces
 {
     public interface IEmailService
     {
-        Task LoadEmails();
+        Task<IEnumerable<MimeMessage>> LoadEmails(DateTime from, DateTime to);
     }
 }
