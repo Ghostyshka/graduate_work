@@ -1,13 +1,8 @@
 ﻿using Autofac;
+using MailApp.Core.Interfaces;
 using MailApp.Core.ViewModels;
 using Windows.UI.Xaml;
 using Windows.UI.Xaml.Controls;
-using System.Diagnostics;
-using Microsoft.Identity.Client;
-using System.Net.Mail;
-using System.Threading.Tasks;
-using MailKit.Net.Imap;
-using MailKit.Security;
 
 // The Blank Page item template is documented at https://go.microsoft.com/fwlink/?LinkId=402352&clcid=0x409
 
@@ -18,15 +13,18 @@ namespace MailApp
     /// </summary>
     public sealed partial class MainPage : Page
     {
+        private MainPageViewModel _vm;
         public MainPage()
         {
             this.InitializeComponent();
-            this.DataContext = App.Container.Resolve<MainPageViewModel>();
+            _vm = App.Container.Resolve<MainPageViewModel>();
+            DataContext = _vm;
         }
 
         private void DOWNLOAD_Click(object sender, RoutedEventArgs e)
         {
-            
+            var emailService = App.Container.Resolve<IEmailService>();
+            emailService.LoadEmails();
         }
     }
 }

@@ -5,6 +5,8 @@ using Windows.ApplicationModel.Activation;
 using Windows.UI.Xaml;
 using Windows.UI.Xaml.Controls;
 using Windows.UI.Xaml.Navigation;
+using MailApp.Core.Interfaces;
+using MailApp.Core.Services;
 using MailApp.Core.ViewModels;
 
 namespace MailApp
@@ -32,7 +34,7 @@ namespace MailApp
             var containerBuilder = new ContainerBuilder();
 
             containerBuilder.RegisterType<MainPageViewModel>().As<MainPageViewModel>().SingleInstance();
-
+            containerBuilder.RegisterType<EmailService>().As<IEmailService>().InstancePerDependency();
             var container = containerBuilder.Build();
             return container;
         }

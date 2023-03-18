@@ -5,6 +5,7 @@
     xmlns:local="using:MailApp"
     xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
     xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+    xmlns:models="using:MailApp.Core.Models" xmlns:viewmodels="using:MailApp.Core.ViewModels" d:DataContext="{d:DesignInstance Type=viewmodels:MainPageViewModel}"
     mc:Ignorable="d"
     Background="{ThemeResource ApplicationPageBackgroundThemeBrush}">
 
@@ -36,6 +37,7 @@
                         Height="117" 
                         Width="150"
                         HorizontalAlignment="Center" 
+                        IsEnabled="{Binding IsNotLoading}"
                         FontSize="30">
                         DOC
                     </Button>
@@ -46,6 +48,7 @@
                         Height="117" 
                         Width="150" 
                         HorizontalAlignment="Center"
+                        IsEnabled="{Binding IsNotLoading}"
                         FontSize="30">
                         PPTX
                     </Button>
@@ -64,6 +67,7 @@
                             Width="128" 
                             FontSize="30" 
                             Grid.ColumnSpan="2" 
+                            IsEnabled="{Binding IsNotLoading}"
                             HorizontalAlignment="Center">
                         PDF
                     </Button>
@@ -89,26 +93,37 @@
                     <ColumnDefinition Width="6*"/>
                     <ColumnDefinition Width="2*"/>
                 </Grid.ColumnDefinitions>
-                <DatePicker Grid.Column="0" x:Name="from" Header="Від"/>
-                <Button x:Name="DOWNLOAD" 
-                        Foreground="Blue"
+                <DatePicker Grid.Column="0" 
+                            SelectedDate="{Binding From, Mode=TwoWay}"
+                            Header="Від"
+                            MaxYear="{Binding MaxYear}"/>
+                <Button Foreground="Blue"
                         Grid.Column="2" 
                         Height="91" 
                         Width="225" 
                         FontSize="30" 
-                        HorizontalAlignment="Center" Click="DOWNLOAD_Click">
+                        HorizontalAlignment="Center" 
+                        IsEnabled="{Binding IsNotLoading}"
+                        Click="DOWNLOAD_Click">
                     DOWNLOAD
                 </Button>
             </Grid>
-            <DatePicker Grid.Row="1" x:Name="to" Header="До"/>
+            <DatePicker SelectedDate="{Binding To, Mode=TwoWay}"
+                        Grid.Row="1" 
+                        MaxYear="{Binding MaxYear}"
+                        Header="До"/>
+            <ProgressRing Height="447" Grid.Row="2" 
+                          IsActive="{Binding IsLoading}" 
+                          Width="422" />
             <ListView
                     x:Name="ListView"
-                    HorizontalAlignment="Center" 
-                    Height="833" 
-                    Grid.Row="2" 
-                    VerticalAlignment="Center"
-                    Width="1200">
-
+                    ItemsSource="{Binding EmailDatas}" 
+                    Grid.Row="2">
+                <ListView.ItemTemplate>
+                    <DataTemplate x:DataType="models:EmailData">
+                        <TextBlock Text="{Binding Subject}"/>
+                    </DataTemplate>
+                </ListView.ItemTemplate>
             </ListView>
         </Grid>
     </Grid>
