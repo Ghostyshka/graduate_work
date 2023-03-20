@@ -119,9 +119,33 @@
                     x:Name="ListView"
                     ItemsSource="{Binding EmailDatas}" 
                     Grid.Row="2">
+                <ListView.ItemContainerStyle>
+                    <Style TargetType="ListViewItem">
+                        <Setter Property="HorizontalContentAlignment" Value="Stretch"/>
+                        <Setter Property="Padding" Value="0" />
+                    </Style>
+                </ListView.ItemContainerStyle>
                 <ListView.ItemTemplate>
                     <DataTemplate x:DataType="models:EmailData">
-                        <TextBlock Text="{Binding Subject}"/>
+                        <Grid HorizontalAlignment="Stretch">
+                            <Grid.ColumnDefinitions>
+                                <ColumnDefinition Width="9*" />
+                                <ColumnDefinition Width="Auto" />
+                            </Grid.ColumnDefinitions>
+                            <Grid Grid.Column="0" HorizontalAlignment="Stretch">
+                                <Grid.ColumnDefinitions>
+                                    <ColumnDefinition Width="3*" />
+                                    <ColumnDefinition Width="3*" />
+                                    <ColumnDefinition Width="7*" />
+                                </Grid.ColumnDefinitions>
+                                <TextBlock Grid.Column="0" Margin="10, 0" TextWrapping="Wrap" Text="{Binding Sender}"/>
+                                <TextBlock Grid.Column="1" Margin="10, 0" TextWrapping="Wrap" Text="{Binding Subject}"/>
+                                <TextBlock Grid.Column="2" Margin="10, 0" TextWrapping="Wrap" Text="{Binding Body}"/>
+                            </Grid>
+                            <TextBlock Grid.Column="1" TextAlignment="Right" HorizontalAlignment="Right" TextWrapping="Wrap" Text="{Binding DateTime}"/>
+                        </Grid>
+
+                        
                     </DataTemplate>
                 </ListView.ItemTemplate>
             </ListView>

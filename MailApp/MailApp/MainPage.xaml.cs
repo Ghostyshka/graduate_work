@@ -1,4 +1,5 @@
-﻿using System.Collections.ObjectModel;
+﻿using System;
+using System.Collections.ObjectModel;
 using System.Linq;
 using System.Threading.Tasks;
 using Autofac;
@@ -41,8 +42,12 @@ namespace MailApp
 
             vm.EmailDatas = new ObservableCollection<EmailData>(vm.MimeMessages.Select(x => new EmailData()
             {
-                Subject = x.Subject
+                Subject = x.Subject,
+                DateTime = x.Date.DateTime,
+                Body = x.TextBody,
+                Sender = x.From?.Mailboxes.First().Name + '\n' + x.From?.Mailboxes.First().Address
             }));
+
             vm.IsLoading = false;
         }
     }
