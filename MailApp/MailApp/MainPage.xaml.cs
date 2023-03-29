@@ -1,5 +1,7 @@
 ﻿using System;
+using System.Collections.Generic;
 using System.Collections.ObjectModel;
+using System.IO;
 using System.Linq;
 using System.Threading.Tasks;
 using Autofac;
@@ -7,6 +9,8 @@ using MailApp.Core.Interfaces;
 using MailApp.Core.Models;
 using MailApp.Core.ViewModels;
 using MimeKit;
+using Windows.Storage.Pickers;
+using Windows.Storage;
 using Windows.UI.Xaml;
 using Windows.UI.Xaml.Controls;
 
@@ -27,9 +31,9 @@ namespace MailApp
             DataContext = _vm;
         }
 
-        private void DOWNLOAD_Click(object sender, RoutedEventArgs e)
+        private async void DOWNLOAD_Click(object sender, RoutedEventArgs e)
         {
-            LoadEmails();
+            await LoadEmails();
         }
 
         private async Task LoadEmails()
@@ -49,6 +53,40 @@ namespace MailApp
             }));
 
             vm.IsLoading = false;
+        }
+
+        private async void DOC_Click(object sender, RoutedEventArgs e)
+        {
+            await SaveDocumentTask(DocumentType.Doc);
+        }
+
+        private async void PPTX_Click(object sender, RoutedEventArgs e)
+        {
+            await SaveDocumentTask(DocumentType.Pptx);
+        }
+
+        private async void PDF_Click(object sender, RoutedEventArgs e)
+        {
+            await SaveDocumentTask(DocumentType.Pdf);
+        }
+
+        private async Task SaveDocumentTask(DocumentType documentType)
+        {
+            var vm = App.Container.Resolve<MainPageViewModel>();
+            var documetService = App.Container.Resolve<IDocumetService>();
+
+            var savePicker = new FileSavePicker();
+            savePicker.SuggestedStartLocation = PickerLocationId.DocumentsLibrary;
+            savePicker.FileTypeChoices.Add(documentType.ToString(), new List<string>() { $".{documentType.ToString().ToLower()}" });
+            savePicker.SuggestedFileName = $"{documentType} {DateTime.Now}";
+
+            StorageFile file = await savePicker.PickSaveFileAsync();
+            
+            var doc = await documetService.GetDocumentAsync(documentType, vm);
+            CachedFileManager.DeferUpdates(file);
+            await FileIO.WriteBytesAsync(file, doc);
+
+            Windows.Storage.Provider.FileUpdateStatus status = await CachedFileManager.CompleteUpdatesAsync(file);
         }
     }
 }

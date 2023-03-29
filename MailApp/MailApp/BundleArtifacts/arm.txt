@@ -1,0 +1,2 @@
+MainPackage=C:\Users\oleks\Documents\graduate_work\MailApp\MailApp\bin\ARM\Release\MailApp_1.0.0.0_ARM.msix
+SymbolPackage=C:\Users\oleks\Documents\graduate_work\MailApp\MailApp\obj\ARM\Release\Symbols\MailApp_1.0.0.0_ARM.appxsym

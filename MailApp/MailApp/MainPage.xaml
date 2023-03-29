@@ -38,7 +38,7 @@
                         Width="150"
                         HorizontalAlignment="Center" 
                         IsEnabled="{Binding IsNotLoading}"
-                        FontSize="30">
+                        FontSize="30" Click="DOC_Click">
                         DOC
                     </Button>
                     <Button 
@@ -49,7 +49,7 @@
                         Width="150" 
                         HorizontalAlignment="Center"
                         IsEnabled="{Binding IsNotLoading}"
-                        FontSize="30">
+                        FontSize="30" Click="PPTX_Click">
                         PPTX
                     </Button>
                 </Grid>
@@ -68,7 +68,7 @@
                             FontSize="30" 
                             Grid.ColumnSpan="2" 
                             IsEnabled="{Binding IsNotLoading}"
-                            HorizontalAlignment="Center">
+                            HorizontalAlignment="Center" Click="PDF_Click">
                         PDF
                     </Button>
                 </Grid>

@@ -34,6 +34,7 @@ namespace MailApp
             var containerBuilder = new ContainerBuilder();
 
             containerBuilder.RegisterType<MainPageViewModel>().As<MainPageViewModel>().SingleInstance();
+            containerBuilder.RegisterType<DocumentService>().As<IDocumetService>().InstancePerDependency();
             containerBuilder.RegisterType<EmailService>().As<IEmailService>().InstancePerDependency();
             var container = containerBuilder.Build();
             return container;

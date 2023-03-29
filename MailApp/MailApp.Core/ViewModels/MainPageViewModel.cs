@@ -10,7 +10,7 @@ namespace MailApp.Core.ViewModels
     {
         public DateTimeOffset MaxYear { get; set; } = DateTimeOffset.Now;
         private DateTimeOffset _from = DateTimeOffset.Now.AddDays(-7);
-        private DateTimeOffset _to = DateTimeOffset.Now;
+        private DateTimeOffset _to = DateTimeOffset.Now.AddDays(1);
         private bool _isLoading;
         public ObservableCollection<EmailData> _emailDatas;
         public ObservableCollection<MimeMessage> MimeMessages { get; set; }
