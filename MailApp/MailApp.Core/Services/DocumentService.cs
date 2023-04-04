@@ -3,8 +3,6 @@ using System.Collections.Generic;
 using System.IO;
 using System.Linq;
 using System.Threading.Tasks;
-using Aspose.Pdf;
-using Aspose.Words.Saving;
 using MailApp.Core.Interfaces;
 using MailApp.Core.Models;
 using MailApp.Core.ViewModels;
