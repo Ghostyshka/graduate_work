@@ -81,6 +81,10 @@ namespace MailApp
             savePicker.SuggestedFileName = $"{documentType} {DateTime.Now}";
 
             StorageFile file = await savePicker.PickSaveFileAsync();
+            if (file == null || !file.IsAvailable)
+            {
+                return;
+            }
             
             var doc = await documetService.GetDocumentAsync(documentType, vm);
             CachedFileManager.DeferUpdates(file);

@@ -1,5 +1,4 @@
-﻿using Aspose.Pdf;
-using MailApp.Core.Helpers;
+﻿using MailApp.Core.Helpers;
 
 namespace MailApp.Core.Models
 {

@@ -12,7 +12,7 @@ namespace MailApp.Core.ViewModels
         private DateTimeOffset _from = DateTimeOffset.Now.AddDays(-7);
         private DateTimeOffset _to = DateTimeOffset.Now.AddDays(1);
         private bool _isLoading;
-        public ObservableCollection<EmailData> _emailDatas;
+        public ObservableCollection<EmailData> _emailDatas = new ObservableCollection<EmailData>();
         public ObservableCollection<MimeMessage> MimeMessages { get; set; }
 
         public bool IsLoading
