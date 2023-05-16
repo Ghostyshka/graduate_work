@@ -164,7 +164,11 @@
       <Version>5.8.1.26</Version>
     </PackageReference>
   </ItemGroup>
-  <ItemGroup />
+  <ItemGroup>
+    <AppxManifest Include="Package.appxmanifest">
+      <SubType>Designer</SubType>
+    </AppxManifest>
+  </ItemGroup>
   <ItemGroup>
     <Reference Include="MailKit">
       <HintPath>..\..\..\..\.nuget\packages\mailkit\3.6.0\lib\netstandard2.0\MailKit.dll</HintPath>

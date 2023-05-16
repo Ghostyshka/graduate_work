@@ -35,25 +35,22 @@
                         Foreground="Blue"
                         x:Name="DOC"
                         Height="117" 
-                        Width="150"
-                        HorizontalAlignment="Center" 
+                        Width="150" 
                         IsEnabled="{Binding IsNotLoading}"
-                        FontSize="30" Click="DOC_Click">
+                        FontSize="30" Click="DOC_Click" Grid.ColumnSpan="2" Margin="93,-236,0,0" VerticalAlignment="Top">
                         DOC
                     </Button>
                     <Button 
                         x:Name="PPTX" 
                         Foreground="Blue"
-                        Grid.Column="1"
                         Height="117" 
-                        Width="150" 
-                        HorizontalAlignment="Center"
+                        Width="150"
                         IsEnabled="{Binding IsNotLoading}"
-                        FontSize="30" Click="PPTX_Click">
+                        FontSize="30" Click="PPTX_Click" Grid.ColumnSpan="2" Margin="93,-70,0,0" VerticalAlignment="Top">
                         PPTX
                     </Button>
                 </Grid>
-                <Grid Grid.Row="1">
+                <Grid Grid.Row="1" Margin="-10,10,10,-10">
                     <Grid.ColumnDefinitions>
                         <ColumnDefinition Width="85*"/>
                         <ColumnDefinition Width="65*"/>
@@ -61,14 +58,15 @@
                         <ColumnDefinition Width="85*"/>
                     </Grid.ColumnDefinitions>
                     <Button x:Name="PDF" 
-                            Foreground="Blue"
-                            Grid.Column="1" 
-                            Height="119" 
-                            Width="128" 
+                            Foreground="Blue" 
+                            Height="109" 
+                            Width="149" 
                             FontSize="30" 
-                            Grid.ColumnSpan="2" 
-                            IsEnabled="{Binding IsNotLoading}"
-                            HorizontalAlignment="Center" Click="PDF_Click">
+                            Grid.ColumnSpan="3" 
+                            IsEnabled="{Binding IsNotLoading}" Click="PDF_Click" Margin="20,-18,0,0" VerticalAlignment="Top" Grid.Column="1" RenderTransformOrigin="0.5,0.5" UseLayoutRounding="False" d:LayoutRounding="Auto">
+                        <Button.RenderTransform>
+                            <CompositeTransform Rotation="0.479"/>
+                        </Button.RenderTransform>
                         PDF
                     </Button>
                 </Grid>
@@ -79,8 +77,8 @@
                 Grid.Row="0"
                 TextWrapping="Wrap" 
                 Text="test.vntu.work@gmail.com" 
-                VerticalAlignment="Center"
-                FontSize="24"/>
+                VerticalAlignment="Top"
+                FontSize="24" Margin="0,10,0,0"/>
         </Grid>
         <Grid Grid.Column="0">
             <Grid.RowDefinitions>
@@ -96,22 +94,19 @@
                 <DatePicker Grid.Column="0" 
                             SelectedDate="{Binding From, Mode=TwoWay}"
                             Header="Від"
-                            MaxYear="{Binding MaxYear}"/>
-                <Button Foreground="Blue"
-                        Grid.Column="2" 
+                            MaxYear="{Binding MaxYear}" Margin="10,0,0,0"/>
+                <Button Foreground="Blue" 
                         Height="91" 
                         Width="225" 
                         FontSize="30" 
-                        HorizontalAlignment="Center" 
                         IsEnabled="{Binding IsNotLoading}"
-                        Click="DOWNLOAD_Click">
+                        Click="DOWNLOAD_Click" Margin="600,-7,0,0" VerticalAlignment="Top">
                     DOWNLOAD
                 </Button>
             </Grid>
-            <DatePicker SelectedDate="{Binding To, Mode=TwoWay}"
-                        Grid.Row="1" 
+            <DatePicker SelectedDate="{Binding To, Mode=TwoWay}" 
                         MaxYear="{Binding MaxYear}"
-                        Header="До"/>
+                        Header="До" VerticalAlignment="Top" Grid.Row="1" Margin="10,0,0,0"/>
             <ProgressRing Height="447" Grid.Row="2" 
                           IsActive="{Binding IsLoading}" 
                           Width="422" />
@@ -145,7 +140,7 @@
                             <TextBlock Grid.Column="1" TextAlignment="Right" HorizontalAlignment="Right" TextWrapping="Wrap" Text="{Binding DateTime}"/>
                         </Grid>
 
-                        
+
                     </DataTemplate>
                 </ListView.ItemTemplate>
             </ListView>

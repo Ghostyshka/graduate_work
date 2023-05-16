@@ -8,14 +8,14 @@
 
   <Identity
     Name="7e384048-b0cb-4238-84c8-fdb9def0354a"
-    Publisher="CN=den01"
+    Publisher="CN=ghost"
     Version="1.0.0.0" />
 
   <mp:PhoneIdentity PhoneProductId="7e384048-b0cb-4238-84c8-fdb9def0354a" PhonePublisherId="00000000-0000-0000-0000-000000000000"/>
 
   <Properties>
     <DisplayName>MailApp</DisplayName>
-    <PublisherDisplayName>oleks</PublisherDisplayName>
+    <PublisherDisplayName>ghost</PublisherDisplayName>
     <Logo>Assets\StoreLogo.png</Logo>
   </Properties>
 
