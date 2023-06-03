@@ -8,5 +8,6 @@ namespace MailApp.Core.Models
         public string Sender { get; set; }
         public DateTime DateTime { get; set; }
         public string Body { get; set; }
+        public bool IsSelected { get; set; }
     }
 }

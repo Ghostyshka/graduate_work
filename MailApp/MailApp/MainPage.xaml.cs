@@ -41,7 +41,9 @@ namespace MailApp
             var vm = App.Container.Resolve<MainPageViewModel>();
             vm.IsLoading = true;
             var emailService = App.Container.Resolve<IEmailService>();
-            var emails = await emailService.LoadEmails(vm.From.Date, vm.To.Date);
+            var emails = (await emailService.LoadEmails(vm.From.Date, vm.To.Date))
+                .Where(x => Enum.GetNames(typeof(DocumentType)).Contains(x.Subject, StringComparer.InvariantCultureIgnoreCase));
+
             vm.MimeMessages = new ObservableCollection<MimeMessage>(emails);
 
             vm.EmailDatas = new ObservableCollection<EmailData>(vm.MimeMessages.Select(x => new EmailData()

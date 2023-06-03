@@ -28,11 +28,11 @@ namespace MailApp.Core.Services
                 // doc and pdf is the same but different buttons
                 case DocumentType.Doc:
                     return await GetDocAsync(
-                        vm.EmailDatas.Where(x => string.Equals(x.Subject, DocumentType.Doc.ToString(), StringComparison.CurrentCultureIgnoreCase))
+                        vm.EmailDatas.Where(x => x.IsSelected && string.Equals(x.Subject, DocumentType.Doc.ToString(), StringComparison.InvariantCultureIgnoreCase))
                             .Select(x => new DocModel(x.Body)), false);
                 case DocumentType.Pdf:
                     return await GetDocAsync(
-                        vm.EmailDatas.Where(x => string.Equals(x.Subject, DocumentType.Doc.ToString(), StringComparison.CurrentCultureIgnoreCase))
+                        vm.EmailDatas.Where(x => x.IsSelected && string.Equals(x.Subject, DocumentType.Doc.ToString(), StringComparison.InvariantCultureIgnoreCase))
                             .Select(x => new PdfModel(x.Body)), true);
                 case DocumentType.Pptx:
                     return Array.Empty<byte>();
