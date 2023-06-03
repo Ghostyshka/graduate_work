@@ -22,6 +22,19 @@
                 <RowDefinition Height="25*"/>
                 <RowDefinition Height="25*"/>
             </Grid.RowDefinitions>
+            <Grid Grid.Row="1">
+                <Button x:Name="AddDoc" 
+                        Foreground="Blue" 
+                        Height="119" 
+                        Width="290" 
+                        FontSize="30" 
+                        IsEnabled="{Binding IsNotLoading}" 
+                        Click="AddDoc_OnClick"
+                        VerticalAlignment="Center" 
+                        HorizontalAlignment="Center">
+                    Add to docx
+                </Button>
+            </Grid>
             <Grid Grid.Row="2">
                 <Grid.RowDefinitions>
                     <RowDefinition Height="1*"/>
@@ -34,13 +47,13 @@
                     </Grid.ColumnDefinitions>
                     <Button 
                         Foreground="Blue"
-                        x:Name="DOC"
+                        x:Name="DOCX"
                         Height="117" 
                         Width="150"
                         HorizontalAlignment="Center" 
                         IsEnabled="{Binding IsNotLoading}"
                         FontSize="30" Click="DOC_Click">
-                        DOC
+                        DOCX
                     </Button>
                     <Button 
                         x:Name="PPTX" 

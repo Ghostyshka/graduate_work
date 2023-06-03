@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using System.Collections.ObjectModel;
 using System.IO;
 using System.Linq;
+using System.Runtime.InteropServices.WindowsRuntime;
 using System.Threading.Tasks;
 using Autofac;
 using MailApp.Core.Interfaces;
@@ -14,6 +15,8 @@ using Windows.Storage;
 using Windows.UI.Xaml;
 using Windows.UI.Xaml.Controls;
 using System.Text.RegularExpressions;
+using System.Security.Principal;
+using Org.BouncyCastle.Asn1.X509;
 
 // The Blank Page item template is documented at https://go.microsoft.com/fwlink/?LinkId=402352&clcid=0x409
 
@@ -60,7 +63,7 @@ namespace MailApp
 
         private async void DOC_Click(object sender, RoutedEventArgs e)
         {
-            await SaveDocumentTask(DocumentType.Doc);
+            await SaveDocumentTask(DocumentType.Docx);
         }
 
         private async void PPTX_Click(object sender, RoutedEventArgs e)
@@ -73,30 +76,64 @@ namespace MailApp
             await SaveDocumentTask(DocumentType.Pdf);
         }
 
-        private async Task SaveDocumentTask(DocumentType documentType)
+        private async Task SaveDocumentTask(DocumentType documentType, WriteMode mode = WriteMode.New)
         {
             var vm = App.Container.Resolve<MainPageViewModel>();
-            var documetService = App.Container.Resolve<IDocumetService>();
+            var documetService = App.Container.Resolve<IDocumentService>();
 
-            var savePicker = new FileSavePicker();
-            savePicker.SuggestedStartLocation = PickerLocationId.DocumentsLibrary;
-            savePicker.FileTypeChoices.Add(documentType.ToString(), new List<string>() { $".{documentType.ToString().ToLower()}" });
-            savePicker.SuggestedFileName = $"{documentType} {DateTime.Now}";
+            StorageFile file = null;
 
-            StorageFile file = await savePicker.PickSaveFileAsync();
-            if (file == null || !file.IsAvailable)
+            switch (mode)
             {
-                return;
+                case WriteMode.New:
+                    {
+                        var filePicker = new FileSavePicker();
+                        filePicker.SuggestedStartLocation = PickerLocationId.DocumentsLibrary;
+                        filePicker.FileTypeChoices.Add(documentType.ToString(), new List<string>() { $".{documentType.ToString().ToLower()}" });
+                        filePicker.SuggestedFileName = $"{documentType} {DateTime.Now}";
+
+                        file = await filePicker.PickSaveFileAsync();
+
+                        if (file == null || !file.IsAvailable)
+                        {
+                            return;
+                        }
+                        break;
+                    }
+                case WriteMode.Old:
+                    {
+                        var filePicker = new FileOpenPicker();
+                        filePicker.SuggestedStartLocation = PickerLocationId.DocumentsLibrary;
+                        filePicker.FileTypeFilter.Add($".{documentType.ToString().ToLower()}");
+
+                        file = await filePicker.PickSingleFileAsync();
+
+
+                        if (file == null || !file.IsAvailable)
+                        {
+                            return;
+                        }
+                        break;
+                    }
+                default:
+                    throw new Exception("invalid write mode");
             }
+
+            
 
             vm.IsLoading = true;
             
-            var doc = await documetService.GetDocumentAsync(documentType, vm);
+            var doc = await documetService.GetDocumentAsync(documentType, vm, mode, file);
             CachedFileManager.DeferUpdates(file);
             await FileIO.WriteBytesAsync(file, doc);
 
             Windows.Storage.Provider.FileUpdateStatus status = await CachedFileManager.CompleteUpdatesAsync(file);
             vm.IsLoading = false;
+        }
+
+        private async void AddDoc_OnClick(object sender, RoutedEventArgs e)
+        {
+            await SaveDocumentTask(DocumentType.Docx, WriteMode.Old);
         }
     }
 }

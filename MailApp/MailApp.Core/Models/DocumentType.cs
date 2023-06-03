@@ -2,7 +2,7 @@
 {
     public enum DocumentType
     {
-        Doc,
+        Docx,
         Pdf,
         Pptx
     }

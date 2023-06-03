@@ -3,7 +3,9 @@ using System.Collections.Generic;
 using System.IO;
 using System.Linq;
 using System.Reflection;
+using System.Runtime.InteropServices.WindowsRuntime;
 using System.Threading.Tasks;
+using Windows.Storage;
 using MailApp.Core.Interfaces;
 using MailApp.Core.Models;
 using MailApp.Core.ViewModels;
@@ -13,11 +15,11 @@ using SaveOptions = SautinSoft.Document.SaveOptions;
 
 namespace MailApp.Core.Services
 {
-    public class DocumentService : IDocumetService
+    public class DocumentService : IDocumentService
     {
         private const string FirstSection = "Монографії";
         private const string SecondSection = "Навчальні посібники";
-        public async Task<byte[]> GetDocumentAsync(DocumentType documentType, MainPageViewModel vm)
+        public async Task<byte[]> GetDocumentAsync(DocumentType documentType, MainPageViewModel vm, WriteMode mode, StorageFile file)
         {
             if (!vm.EmailDatas.Any())
             {
@@ -26,34 +28,54 @@ namespace MailApp.Core.Services
             switch (documentType)
             {
                 // doc and pdf is the same but different buttons
-                case DocumentType.Doc:
+                case DocumentType.Docx:
                     return await GetDocAsync(
-                        vm.EmailDatas.Where(x => x.IsSelected && string.Equals(x.Subject, DocumentType.Doc.ToString(), StringComparison.InvariantCultureIgnoreCase))
-                            .Select(x => new DocModel(x.Body)), false);
+                        vm.EmailDatas.Where(x => x.IsSelected && string.Equals(x.Subject, DocumentType.Docx.ToString(), StringComparison.InvariantCultureIgnoreCase))
+                            .Select(x => new DocModel(x.Body)), false, mode, file);
                 case DocumentType.Pdf:
                     return await GetDocAsync(
-                        vm.EmailDatas.Where(x => x.IsSelected && string.Equals(x.Subject, DocumentType.Doc.ToString(), StringComparison.InvariantCultureIgnoreCase))
-                            .Select(x => new PdfModel(x.Body)), true);
+                        vm.EmailDatas.Where(x => x.IsSelected && string.Equals(x.Subject, DocumentType.Docx.ToString(), StringComparison.InvariantCultureIgnoreCase))
+                            .Select(x => new PdfModel(x.Body)), true, mode, file);
                 case DocumentType.Pptx:
                     return Array.Empty<byte>();
                 default:
                     return Array.Empty<byte>();
             }
         }
-        private async Task<byte[]> GetDocAsync(IEnumerable<DocModel> payloads, bool isPdf)
+        private async Task<byte[]> GetDocAsync(IEnumerable<DocModel> payloads, bool isPdf, WriteMode mode, StorageFile file)
         {
-            var pathToDocument = AppDomain.CurrentDomain.BaseDirectory + "Assets\\DOC.docx";
-
-            DocumentCore document = DocumentCore.Load(pathToDocument);
+            
+            DocumentCore document = null;
+                
+            switch (mode)
+            {
+                case WriteMode.New:
+                {
+                    var pathToDocument = AppDomain.CurrentDomain.BaseDirectory + "Assets\\DOC.docx";
+                    document = DocumentCore.Load(pathToDocument);
+                    break;
+                }
+                case WriteMode.Old:
+                {
+                    document = DocumentCore.Load((await FileIO.ReadBufferAsync(file)).AsStream(), LoadOptions.DocxDefault);
+                    break;
+                }
+                default:
+                {
+                    throw new Exception("Invalid mode");
+                }
+            }
 
             var tables = document.GetChildElements(true, ElementType.Table).ToList().Cast<Table>().ToList();
+
+            var existingRowCount = tables[1].Rows.Count - 1;
 
             foreach (var (docModel, index) in payloads.Where(x 
                          => x.Section.Equals(FirstSection, StringComparison.CurrentCultureIgnoreCase)).Select((item, index) 
                          => (item, index)))
             {
                 var tableRow = new TableRow(document);
-                tableRow.Cells.Add(FDCell(document, (index + 1).ToString(), HorizontalAlignment.Left));
+                tableRow.Cells.Add(FDCell(document, (index + 1 + existingRowCount).ToString(), HorizontalAlignment.Left));
                 tableRow.Cells.Add(FDCell(document, docModel.FullName, HorizontalAlignment.Left));
                 tableRow.Cells.Add(FDCell(document, docModel.Title, HorizontalAlignment.Left));
                 tableRow.Cells.Add(FDCell(document, docModel.City, HorizontalAlignment.Left));
@@ -61,12 +83,13 @@ namespace MailApp.Core.Services
                 tableRow.Cells.Add(FDCell(document, docModel.NumberOfPages, HorizontalAlignment.Left));
                 tables[1].Rows.Add(tableRow);
             }
+            existingRowCount = tables[4].Rows.Count - 1;
             foreach (var (docModel, index) in payloads.Where(x 
                          => x.Section.Equals(SecondSection, StringComparison.CurrentCultureIgnoreCase)).Select((item, index) 
                          => (item, index)))
             {
                 var tableRow = new TableRow(document);
-                tableRow.Cells.Add(FDCell(document, (index + 1).ToString(), HorizontalAlignment.Left));
+                tableRow.Cells.Add(FDCell(document, (index + 1 + existingRowCount).ToString(), HorizontalAlignment.Left));
                 tableRow.Cells.Add(FDCell(document, docModel.FullName, HorizontalAlignment.Left));
                 tableRow.Cells.Add(FDCell(document, docModel.Title, HorizontalAlignment.Left));
                 tableRow.Cells.Add(FDCell(document, docModel.City, HorizontalAlignment.Left));
@@ -75,10 +98,20 @@ namespace MailApp.Core.Services
                 tables[4].Rows.Add(tableRow);
             }
 
+            if (mode == WriteMode.Old)
+            {
+                existingRowCount = tables[5].Rows.Count - 3;
+                tables[5].Rows.RemoveAt(tables[5].Rows.Count - 1);
+            }
+            else
+            {
+                existingRowCount = 0;
+            }
+            
             foreach (var (docModel, index) in payloads.Select((item, index) => (item, index)))
             {
                 var tableRow = new TableRow(document);
-                tableRow.Cells.Add(FDCell(document, (index + 1).ToString(), HorizontalAlignment.Left));
+                tableRow.Cells.Add(FDCell(document, (index + 1 + existingRowCount).ToString(), HorizontalAlignment.Left));
                 tableRow.Cells.Add(FDCell(document, docModel.FullName, HorizontalAlignment.Left));
                 tableRow.Cells.Add(FDCell(document, docModel.Title, HorizontalAlignment.Left));
 
@@ -99,9 +132,11 @@ namespace MailApp.Core.Services
                 
                 tables[5].Rows.Add(tableRow);
             }
+
+            
             var tableRowFinish = new TableRow(document);
             tableRowFinish.Cells.Add(new TableCell(document));
-            tableRowFinish.Cells.Add(new TableCell(document, new Paragraph(document, $"Всього {payloads.Count()}"))
+            tableRowFinish.Cells.Add(new TableCell(document, new Paragraph(document, $"Всього {payloads.Count() + existingRowCount}"))
             {
                 ColumnSpan = 5
             });
