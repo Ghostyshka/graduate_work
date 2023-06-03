@@ -13,6 +13,7 @@ using Windows.Storage.Pickers;
 using Windows.Storage;
 using Windows.UI.Xaml;
 using Windows.UI.Xaml.Controls;
+using System.Text.RegularExpressions;
 
 // The Blank Page item template is documented at https://go.microsoft.com/fwlink/?LinkId=402352&clcid=0x409
 
@@ -87,12 +88,15 @@ namespace MailApp
             {
                 return;
             }
+
+            vm.IsLoading = true;
             
             var doc = await documetService.GetDocumentAsync(documentType, vm);
             CachedFileManager.DeferUpdates(file);
             await FileIO.WriteBytesAsync(file, doc);
 
             Windows.Storage.Provider.FileUpdateStatus status = await CachedFileManager.CompleteUpdatesAsync(file);
+            vm.IsLoading = false;
         }
     }
 }

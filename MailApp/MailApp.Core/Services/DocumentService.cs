@@ -86,17 +86,17 @@ namespace MailApp.Core.Services
                 tableRow.Cells.Add(FDCell(document, docModel.TomNumber, HorizontalAlignment.Left));
                 tableRow.Cells.Add(FDCell(document, docModel.NumberOfPages, HorizontalAlignment.Left));
 
-                tableRow.Cells.Add(new TableCell(document));
-                tableRow.Cells.Add(new TableCell(document));
-                tableRow.Cells.Add(new TableCell(document));
-                tableRow.Cells.Add(new TableCell(document));
-                tableRow.Cells.Add(new TableCell(document));
-                tableRow.Cells.Add(new TableCell(document));
-                tableRow.Cells.Add(new TableCell(document));
-                tableRow.Cells.Add(new TableCell(document));
-                tableRow.Cells.Add(new TableCell(document));
-                tableRow.Cells.Add(new TableCell(document));
-                tableRow.Cells.Add(new TableCell(document));
+                tableRow.Cells.Add(FDCell(document, docModel.CategoryA, HorizontalAlignment.Left));
+                tableRow.Cells.Add(FDCell(document, docModel.CategoryB, HorizontalAlignment.Left));
+                tableRow.Cells.Add(FDCell(document, docModel.InternationalPublications, HorizontalAlignment.Left));
+                tableRow.Cells.Add(FDCell(document, docModel.ScopusPublications, HorizontalAlignment.Left));
+                tableRow.Cells.Add(FDCell(document, docModel.WoSPublications, HorizontalAlignment.Left));
+                tableRow.Cells.Add(FDCell(document, docModel.CopernicusPublications, HorizontalAlignment.Left));
+                tableRow.Cells.Add(FDCell(document, docModel.OtherPublications, HorizontalAlignment.Left));
+                tableRow.Cells.Add(FDCell(document, docModel.CoreCollectionPublications, HorizontalAlignment.Left));
+                tableRow.Cells.Add(FDCell(document, docModel.QCategoryPublications, HorizontalAlignment.Left));
+                tableRow.Cells.Add(FDCell(document, docModel.ConferenceThesis, HorizontalAlignment.Left));
+                
                 tables[5].Rows.Add(tableRow);
             }
             var tableRowFinish = new TableRow(document);
@@ -105,7 +105,6 @@ namespace MailApp.Core.Services
             {
                 ColumnSpan = 5
             });
-            tableRowFinish.Cells.Add(new TableCell(document));
             tableRowFinish.Cells.Add(new TableCell(document));
             tableRowFinish.Cells.Add(new TableCell(document));
             tableRowFinish.Cells.Add(new TableCell(document));
