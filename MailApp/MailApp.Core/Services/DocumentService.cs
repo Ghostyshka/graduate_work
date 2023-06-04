@@ -23,10 +23,10 @@ namespace MailApp.Core.Services
         private const string SecondSection = "Навчальні посібники";
         public async Task<byte[]> GetDocumentAsync(DocumentType documentType, MainPageViewModel vm, WriteMode mode, StorageFile file)
         {
-            //if (!vm.EmailDatas.Any())
-            //{
-            //    return Array.Empty<byte>();
-            //}
+            if (!vm.EmailDatas.Any())
+            {
+                return Array.Empty<byte>();
+            }
             switch (documentType)
             {
                 // doc and pdf is the same but different buttons
@@ -58,7 +58,7 @@ namespace MailApp.Core.Services
             var grouped = payloads.GroupBy(x => x.Section);
 
             var sourceTemplateSlide = presentation.Slides[2];
-            var sourceShapeEndText = presentation.Slides[3].Content.Drawings[0]; 
+            var sourceShapeEndText = presentation.Slides[3].Content.Drawings[0];
             var sourceShapeSection = presentation.Slides[3].Content.Drawings[1];
 
 
@@ -95,9 +95,7 @@ namespace MailApp.Core.Services
                 data = group.Last();
                 targetShape = newSlide.Content.Drawings.AddClone(sourceShapeEndText);
                 targetShape.TextContent.Replace("##розділ##", data.Section);
-                //
             }
-            // todo
             presentation.Slides.RemoveAt(presentation.Slides.Count - 1);
             presentation.Slides.RemoveAt(presentation.Slides.Count - 1);
 
