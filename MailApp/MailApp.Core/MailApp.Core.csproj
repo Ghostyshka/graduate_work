@@ -147,8 +147,8 @@
     <EmbeddedResource Include="Properties\MailApp.Core.rd.xml" />
   </ItemGroup>
   <ItemGroup>
-    <PackageReference Include="Aspose.Slides.NET">
-      <Version>23.3.1</Version>
+    <PackageReference Include="GemBox.Presentation">
+      <Version>25.0.1458</Version>
     </PackageReference>
     <PackageReference Include="MailKit">
       <Version>3.6.0</Version>

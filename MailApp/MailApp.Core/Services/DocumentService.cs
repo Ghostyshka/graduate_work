@@ -2,15 +2,17 @@
 using System.Collections.Generic;
 using System.IO;
 using System.Linq;
-using System.Reflection;
 using System.Runtime.InteropServices.WindowsRuntime;
 using System.Threading.Tasks;
 using Windows.Storage;
+using GemBox.Presentation;
 using MailApp.Core.Interfaces;
 using MailApp.Core.Models;
 using MailApp.Core.ViewModels;
 using SautinSoft.Document;
 using SautinSoft.Document.Tables;
+using HorizontalAlignment = SautinSoft.Document.HorizontalAlignment;
+using LoadOptions = SautinSoft.Document.LoadOptions;
 using SaveOptions = SautinSoft.Document.SaveOptions;
 
 namespace MailApp.Core.Services
@@ -21,27 +23,98 @@ namespace MailApp.Core.Services
         private const string SecondSection = "Навчальні посібники";
         public async Task<byte[]> GetDocumentAsync(DocumentType documentType, MainPageViewModel vm, WriteMode mode, StorageFile file)
         {
-            if (!vm.EmailDatas.Any())
-            {
-                return Array.Empty<byte>();
-            }
+            //if (!vm.EmailDatas.Any())
+            //{
+            //    return Array.Empty<byte>();
+            //}
             switch (documentType)
             {
                 // doc and pdf is the same but different buttons
                 case DocumentType.Docx:
                     return await GetDocAsync(
-                        vm.EmailDatas.Where(x => x.IsSelected && string.Equals(x.Subject, DocumentType.Docx.ToString(), StringComparison.InvariantCultureIgnoreCase))
+                        vm.EmailDatas
+                            .Where(x => x.IsSelected && string.Equals(x.Subject, DocumentType.Docx.ToString(), StringComparison.InvariantCultureIgnoreCase))
                             .Select(x => new DocModel(x.Body)), false, mode, file);
                 case DocumentType.Pdf:
                     return await GetDocAsync(
-                        vm.EmailDatas.Where(x => x.IsSelected && string.Equals(x.Subject, DocumentType.Docx.ToString(), StringComparison.InvariantCultureIgnoreCase))
+                        vm.EmailDatas
+                            .Where(x => x.IsSelected && string.Equals(x.Subject, DocumentType.Docx.ToString(), StringComparison.InvariantCultureIgnoreCase))
                             .Select(x => new PdfModel(x.Body)), true, mode, file);
                 case DocumentType.Pptx:
-                    return Array.Empty<byte>();
+                    return await GetPptxAsync(vm.EmailDatas
+                            .Where(x => x.IsSelected && string.Equals(x.Subject, DocumentType.Pptx.ToString(), StringComparison.InvariantCultureIgnoreCase))
+                            .Select(x => new PptxModel(x.Body)));
                 default:
                     return Array.Empty<byte>();
             }
         }
+
+        private async Task<byte[]> GetPptxAsync(IEnumerable<PptxModel> payloads)
+        {
+
+            ComponentInfo.SetLicense("FREE-LIMITED-KEY");
+            var pathToDocument = AppDomain.CurrentDomain.BaseDirectory + "Assets\\PPTX.pptx";
+            var presentation = PresentationDocument.Load(pathToDocument);
+            var grouped = payloads.GroupBy(x => x.Section);
+
+            var sourceTemplateSlide = presentation.Slides[2];
+            var sourceShapeEndText = presentation.Slides[3].Content.Drawings[0]; 
+            var sourceShapeSection = presentation.Slides[3].Content.Drawings[1];
+
+
+            foreach (var group in grouped)
+            {
+                var data = group.ElementAt(0);
+                var newSlide = presentation.Slides.InsertClone(presentation.Slides.Count - 3, sourceTemplateSlide);
+
+                var sourceShape = newSlide.Content.Drawings.ElementAt(1);
+                var targetShape = newSlide.Content.Drawings.AddClone(sourceShape);
+
+                targetShape.TextContent.Replace("##автори##", data.Author);
+                targetShape.TextContent.Replace("##тема##", data.Topic);
+                targetShape.TextContent.Replace("##сторінки##", data.Pages.ToString());
+                targetShape.TextContent.Replace("##рецензенти##", data.Reviewers);
+
+                targetShape = newSlide.Content.Drawings.AddClone(sourceShapeSection);
+                targetShape.TextContent.Replace("##розділ##", data.Section);
+
+                for (int i = 1; i <= group.Count() - 1; i++)
+                {
+                    data = group.ElementAt(i);
+
+                    newSlide = presentation.Slides.InsertClone(presentation.Slides.Count - 3, sourceTemplateSlide);
+
+                    sourceShape = newSlide.Content.Drawings.ElementAt(1);
+                    targetShape = newSlide.Content.Drawings.AddClone(sourceShape);
+
+                    targetShape.TextContent.Replace("##автори##", data.Author);
+                    targetShape.TextContent.Replace("##тема##", data.Topic);
+                    targetShape.TextContent.Replace("##сторінки##", data.Pages.ToString());
+                    targetShape.TextContent.Replace("##рецензенти##", data.Reviewers);
+                }
+                data = group.Last();
+                targetShape = newSlide.Content.Drawings.AddClone(sourceShapeEndText);
+                targetShape.TextContent.Replace("##розділ##", data.Section);
+                //
+            }
+            // todo
+            presentation.Slides.RemoveAt(presentation.Slides.Count - 1);
+            presentation.Slides.RemoveAt(presentation.Slides.Count - 1);
+
+            MemoryStream presentationStream = new MemoryStream();
+            presentation.Save(presentationStream, GemBox.Presentation.SaveOptions.Pptx);
+
+            byte[] presentationBytes = presentationStream.ToArray();
+            presentationStream.Close();
+            return presentationBytes;
+        }
+
+
+
+
+
+
+
         private async Task<byte[]> GetDocAsync(IEnumerable<DocModel> payloads, bool isPdf, WriteMode mode, StorageFile file)
         {
             
@@ -164,6 +237,8 @@ namespace MailApp.Core.Services
             memStream.Seek(0, SeekOrigin.Begin);
             return memStream.ToArray();
         }
+
+
 
 
         TableCell FDCell(DocumentCore doc, string text, HorizontalAlignment alignment)
