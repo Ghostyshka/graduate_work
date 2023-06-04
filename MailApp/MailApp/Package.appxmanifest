@@ -9,7 +9,11 @@
   <Identity
     Name="7e384048-b0cb-4238-84c8-fdb9def0354a"
     Publisher="CN=den01"
+<<<<<<< Updated upstream
     Version="1.0.0.0" />
+=======
+    Version="1.1.1.0" />
+>>>>>>> Stashed changes
 
   <mp:PhoneIdentity PhoneProductId="7e384048-b0cb-4238-84c8-fdb9def0354a" PhonePublisherId="00000000-0000-0000-0000-000000000000"/>
 
