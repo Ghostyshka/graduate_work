@@ -131,7 +131,6 @@ namespace MailApp.Core.Services
             return memStream.ToArray();
         }
 
-
         TableCell FDCell(DocumentCore doc, string text, HorizontalAlignment alignment)
         {
             var par = new Paragraph(doc);

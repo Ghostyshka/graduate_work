@@ -15,7 +15,7 @@ namespace MailApp.Core.Services
     {
         public EmailService()
         {
-
+        
         }
 
         public async Task<IEnumerable<MimeMessage>> LoadEmails(DateTime from, DateTime to)
