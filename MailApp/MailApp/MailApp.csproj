@@ -23,7 +23,11 @@
     <PackageCertificateThumbprint>07BE9175E7483DF41FD9E118A49AA5A49037F97D</PackageCertificateThumbprint>
 =======
     <GenerateAppInstallerFile>False</GenerateAppInstallerFile>
+<<<<<<< Updated upstream
     <PackageCertificateThumbprint>877822B43FB68A4545AF09C30FD46E35503A0E0D</PackageCertificateThumbprint>
+>>>>>>> Stashed changes
+=======
+    <PackageCertificateThumbprint>DE8170D6175B5E566695D087010E1E8650C78A9B</PackageCertificateThumbprint>
 >>>>>>> Stashed changes
     <AppxPackageSigningTimestampDigestAlgorithm>SHA256</AppxPackageSigningTimestampDigestAlgorithm>
     <AppxAutoIncrementPackageRevision>True</AppxAutoIncrementPackageRevision>
