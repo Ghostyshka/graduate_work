@@ -8,14 +8,16 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Net;
 using System.Threading.Tasks;
+using MailApp.Core.Models;
 
 namespace MailApp.Core.Services
 {
     public class EmailService : IEmailService
     {
-        public EmailService()
+        private readonly MailSettings _mailSettings;
+        public EmailService(MailSettings mailSettings)
         {
-
+            _mailSettings = mailSettings;
         }
 
         public async Task<IEnumerable<MimeMessage>> LoadEmails(DateTime from, DateTime to)
@@ -30,8 +32,8 @@ namespace MailApp.Core.Services
         private async Task<ImapClient> GetImapClient()
         {
             var client = new ImapClient();
-            var credentials = new NetworkCredential("test.vntu.work@gmail.com", "lyqzcabmbsfmjydh");
-            var uri = new Uri("imaps://imap.gmail.com");
+            var credentials = new NetworkCredential(_mailSettings.Login, _mailSettings.Password);
+            var uri = new Uri(_mailSettings.Url);
             await client.ConnectAsync(uri);
             client.AuthenticationMechanisms.Remove("XOAUTH2");
             await client.AuthenticateAsync(credentials);

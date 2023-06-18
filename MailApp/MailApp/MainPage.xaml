@@ -92,7 +92,7 @@
                 Padding="10, 0, 0, 0"
                 Grid.Row="0"
                 TextWrapping="Wrap" 
-                Text="test.vntu.work@gmail.com" 
+                Text="{Binding Login}" 
                 VerticalAlignment="Center"
                 FontSize="24"/>
         </Grid>

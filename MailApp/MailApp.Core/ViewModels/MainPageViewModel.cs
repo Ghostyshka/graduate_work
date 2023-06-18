@@ -8,6 +8,11 @@ namespace MailApp.Core.ViewModels
 {
     public class MainPageViewModel : INotifyPropertyChanged
     {
+        public MainPageViewModel(MailSettings mailSettings)
+        {
+            Login = mailSettings.Login;
+        }
+        public string Login { get; set; }
         public DateTimeOffset MaxYear { get; set; } = DateTimeOffset.Now;
         private DateTimeOffset _from = DateTimeOffset.Now.AddDays(-7);
         private DateTimeOffset _to = DateTimeOffset.Now.AddDays(1);

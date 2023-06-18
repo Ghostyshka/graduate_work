@@ -8,6 +8,9 @@ using Windows.UI.Xaml.Navigation;
 using MailApp.Core.Interfaces;
 using MailApp.Core.Services;
 using MailApp.Core.ViewModels;
+using Windows.Storage;
+using MailApp.Core.Models;
+using Newtonsoft.Json;
 
 namespace MailApp
 {
@@ -31,7 +34,13 @@ namespace MailApp
         public static IContainer Container { get; set; }
         private IContainer ConfigureServices()
         {
+            var file = Package.Current.InstalledLocation.GetFileAsync("appsettings.json").AsTask().Result;
+            var jsonString = FileIO.ReadTextAsync(file).AsTask().Result;
+            var mailSettings = JsonConvert.DeserializeObject<MailSettings>(jsonString);
+
             var containerBuilder = new ContainerBuilder();
+
+            containerBuilder.RegisterInstance(mailSettings).As<MailSettings>();
 
             containerBuilder.RegisterType<MainPageViewModel>().As<MainPageViewModel>().SingleInstance();
             containerBuilder.RegisterType<DocumentService>().As<IDocumentService>().InstancePerDependency();

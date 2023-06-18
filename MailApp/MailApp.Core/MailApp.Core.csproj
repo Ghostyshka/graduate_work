@@ -136,6 +136,7 @@
     <Compile Include="Models\DocModel.cs" />
     <Compile Include="Models\DocumentType.cs" />
     <Compile Include="Models\EmailData.cs" />
+    <Compile Include="Models\MailSettings.cs" />
     <Compile Include="Models\PdfModel.cs" />
     <Compile Include="Models\PptxModel.cs" />
     <Compile Include="Models\RegexConstants.cs" />
@@ -160,6 +161,9 @@
       <Version>1.0.3</Version>
       <IncludeAssets>runtime; build; native; contentfiles; analyzers; buildtransitive</IncludeAssets>
       <PrivateAssets>all</PrivateAssets>
+    </PackageReference>
+    <PackageReference Include="Newtonsoft.Json">
+      <Version>13.0.3</Version>
     </PackageReference>
     <PackageReference Include="sautinsoft.document">
       <Version>5.8.1.26</Version>
