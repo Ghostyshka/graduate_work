@@ -19,7 +19,7 @@
     <WindowsXamlEnableOverview>true</WindowsXamlEnableOverview>
     <AppxPackageSigningEnabled>True</AppxPackageSigningEnabled>
     <GenerateAppInstallerFile>False</GenerateAppInstallerFile>
-    <PackageCertificateThumbprint>38AA40D6549B3156B2C340E47D83DC95C882DBAC</PackageCertificateThumbprint>
+    <PackageCertificateThumbprint>55B4905C5AC0CD3F058096D02AF6B44383B7A85C</PackageCertificateThumbprint>
     <AppxPackageSigningTimestampDigestAlgorithm>SHA256</AppxPackageSigningTimestampDigestAlgorithm>
     <AppxAutoIncrementPackageRevision>True</AppxAutoIncrementPackageRevision>
     <AppxPackageDir>C:\Users\oleks\Desktop\foo\</AppxPackageDir>
@@ -28,6 +28,7 @@
     <AppxBundlePlatforms>x86</AppxBundlePlatforms>
     <AppInstallerUri>C:\Users\oleks\Desktop\foo</AppInstallerUri>
     <HoursBetweenUpdateChecks>0</HoursBetweenUpdateChecks>
+    <PackageCertificateKeyFile />
   </PropertyGroup>
   <PropertyGroup Condition="'$(Configuration)|$(Platform)' == 'Debug|x86'">
     <DebugSymbols>true</DebugSymbols>

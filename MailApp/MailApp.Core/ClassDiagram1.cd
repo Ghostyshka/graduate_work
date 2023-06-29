@@ -1,0 +1,74 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<ClassDiagram MajorVersion="1" MinorVersion="1">
+  <Class Name="MailApp.Core.ViewModels.MainPageViewModel" Collapsed="true">
+    <Position X="0.5" Y="1.25" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AgAQAAAAAACAAAABIAAAAAAAggAIACAAQAAACCAAAAI=</HashCode>
+      <FileName>ViewModels\MainPageViewModel.cs</FileName>
+    </TypeIdentifier>
+    <Lollipop Position="0.2" />
+  </Class>
+  <Class Name="System.Object" Collapsed="true">
+    <Position X="3" Y="0.5" Width="1.5" />
+    <TypeIdentifier />
+  </Class>
+  <Class Name="MailApp.Core.Services.EmailService" Collapsed="true">
+    <Position X="0.5" Y="2.25" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AAAAAAAAACAAAAAAAAAAAAAAAAAAAAAACAAAAAAAAAA=</HashCode>
+      <FileName>Services\EmailService.cs</FileName>
+    </TypeIdentifier>
+    <Lollipop Position="0.2" />
+  </Class>
+  <Class Name="MailApp.Core.Services.DocumentService" Collapsed="true">
+    <Position X="0.5" Y="3" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>QAAAAAAAAAABAAAAEAAAAQBAAAAAAAAAAAAAAgAAAAA=</HashCode>
+      <FileName>Services\DocumentService.cs</FileName>
+    </TypeIdentifier>
+    <Lollipop Position="0.2" />
+  </Class>
+  <Class Name="MailApp.Core.Models.DocModel" Collapsed="true">
+    <Position X="5.5" Y="3.5" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AgAAAAAAAAEAEMAIAAAAAJAAAAAAAAEAAgIAAIgACog=</HashCode>
+      <FileName>Models\DocModel.cs</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="MailApp.Core.Models.EmailData" Collapsed="true">
+    <Position X="5.5" Y="4.5" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AAAAAAAAAAAAEAAAAIABAAAAAAAAAAQAAAAAAAAIAAA=</HashCode>
+      <FileName>Models\EmailData.cs</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="MailApp.Core.Models.PdfModel" Collapsed="true">
+    <Position X="5.5" Y="2.25" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA=</HashCode>
+      <FileName>Models\PdfModel.cs</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="MailApp.Core.Models.PptxModel" Collapsed="true">
+    <Position X="5.5" Y="1.25" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AAAAAAAABAAAAAAggAAAAAAAAAAAAAAAAAAAAKAAAAA=</HashCode>
+      <FileName>Models\PptxModel.cs</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="MailApp.Core.Models.RegexConstants" Collapsed="true">
+    <Position X="2.5" Y="5.5" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>oACAgkAgAAAAGCAAAAAAFAgAAIgAAACABAgAQAAIEgA=</HashCode>
+      <FileName>Models\RegexConstants.cs</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="MailApp.Core.Helpers.RegexHelper" Collapsed="true">
+    <Position X="1.25" Y="4.75" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AAAAAAAAAAAAAAAAAAAAAAAAAAAAABAAAAAAAAAAAAA=</HashCode>
+      <FileName>Helpers\RegexHelper.cs</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Font Name="Segoe UI" Size="9" />
+</ClassDiagram>
